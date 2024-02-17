@@ -40,13 +40,13 @@
                 <div class="card p-2">
                     <div class="row">
                         <div class="col col-3">
-                            <input type="text" class="form-control" id="rgb_color" placeholder="RGB color">
+                            <input type="text" class="form-control" id="rgb_color" placeholder="RGB color (255,0,0)">
                         </div>
                         <div class="col col-3">
-                            <input type="text" class="form-control" id="min_depth" placeholder="Minimum Depth" required>
+                            <input type="text" class="form-control" id="min_depth" placeholder="Minimum Depth ({{ object.minimum_depth }})" required>
                         </div>
                         <div class="col col-3">
-                            <input type="text" class="form-control" id="max_depth" placeholder="Maximum Depth" required>
+                            <input type="text" class="form-control" id="max_depth" placeholder="Maximum Depth ({{ object.maximum_depth }})" required>
                         </div>
                         <div>
                             <button class="btn btn-success" id="build">Build the image</button>
@@ -83,6 +83,7 @@
             $.get('{% url "image_builder_api:generate_image-list" object.pk %}', function (response) {
                 console.log(response['results'])
                 let html = ""
+                if (response['results']){
                 response['results'].forEach(function (item) {
                     console.log(item['reconstruct_image']); // Example: Output each item to console
 
@@ -95,6 +96,9 @@
                             </div>`
 
                 });
+                }
+                html = "No generated images"
+
                 $("#generated_images").html(html)
 
             }, 'json')
@@ -125,9 +129,18 @@
                 success: function (resultData) {
                     get_generated_images()
                 },
-                error: function (e) {
+                error: function (xhr) {
                     get_generated_images()
-                    console.log(`. Error: ${e.responseJSON}`);
+                    if (xhr.responseJSON) {
+                        for (const field in xhr.responseJSON) {
+                            const errorMessages = xhr.responseJSON[field];
+                            // Display or handle errorMessages for the specific field
+                            alert(`${errorMessages}`);
+                        }
+                    } else {
+                        alert(`An error occurred - ${xhr.responseJSON}`);
+                    }
+                    return false;
                 }
             });
         });
