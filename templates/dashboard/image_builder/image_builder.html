@@ -1,0 +1,135 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block styles %}
+    <style>
+        img.my-image {
+            max-height: 100px; /* Adjust as needed */
+            object-fit: contain; /* Optional: prevents cropping */
+        }
+
+        .image-container {
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}
+
+{% block dashboard_content %}
+    <div class="content-wrapper">
+
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Dashboard</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Image Builder</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card p-2">
+                    <div class="row">
+                        <div class="col col-3">
+                            <input type="text" class="form-control" id="rgb_color" placeholder="RGB color">
+                        </div>
+                        <div class="col col-3">
+                            <input type="text" class="form-control" id="min_depth" placeholder="Minimum Depth" required>
+                        </div>
+                        <div class="col col-3">
+                            <input type="text" class="form-control" id="max_depth" placeholder="Maximum Depth" required>
+                        </div>
+                        <div>
+                            <button class="btn btn-success" id="build">Build the image</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="image-container">
+                    <label>Original Image</label><br>
+                    <a href="{{ object.original_image.url }}"><img src="{{ object.original_image.url }}" width="50"
+                                                                   height="50" class="img-fluid my-image"></a>
+                </div>
+
+                <div class="generated_images mb-2">
+                    <label>Generated Image</label><br>
+                    <div class="row mb-2" id="generated_images">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script type="text/javascript">
+        get_generated_images();
+
+        function get_generated_images() {
+            $.get('{% url "image_builder_api:generate_image-list" object.pk %}', function (response) {
+                console.log(response['results'])
+                let html = ""
+                response['results'].forEach(function (item) {
+                    console.log(item['reconstruct_image']); // Example: Output each item to console
+
+                    html += `<div class="col col-2 image-container mb-3">
+                            <a href="${item['reconstruct_image']}">
+                            <img src="${item['reconstruct_image']}"
+                            class="img-fluid my-image "></a>
+                            <br>
+                            <span>(${item['width']} x  ${item['height']})</span>
+                            </div>`
+
+                });
+                $("#generated_images").html(html)
+
+            }, 'json')
+                .fail(function (xhr, status, error) {
+                    // Handle errors here
+                    alert(xhr.responseText);
+                });
+        }
+
+        $("#build").click(function () {
+            const rgb_color = $("#rgb_color").val();
+            const depth_min = $("#min_depth").val();
+            const depth_max = $("#max_depth").val();
+
+            $.ajax({
+                url: "{% url 'image_builder_api:generate_image' %}",
+                headers: {
+                    "X-CSRFToken": '{{ csrf_token }}'
+                },
+                type: "POST",
+                data: {
+                    'original_image_id': '{{ object.id }}',
+                    'rgb_color': rgb_color,
+                    'depth_min': depth_min,
+                    'depth_max': depth_max
+                },
+                cache: true,
+                success: function (resultData) {
+                    get_generated_images()
+                },
+                error: function (e) {
+                    get_generated_images()
+                    console.log(`. Error: ${e.responseJSON}`);
+                }
+            });
+        });
+    </script>
+{% endblock %}
