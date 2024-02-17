@@ -45,5 +45,5 @@ class GeneratedImageList(ListAPIView):
     serializer_class = GeneratedImageSerializer
 
     def get_queryset(self):
-        original_image = OriginalImage.objects.get(id=7)
+        original_image = OriginalImage.objects.get(id=self.request.parser_context.get('kwargs').get('pk'))
         return ReConstructImage.objects.filter(original_image=original_image)
