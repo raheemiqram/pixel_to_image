@@ -1,5 +1,5 @@
 def core(request):
     context = {
-        "SITE_NAME": "DJANGO_DASHBOARD",
+        "SITE_NAME": "OPENINNOVATION",
     }
     return context
