@@ -30,3 +30,8 @@ class Tests(APITestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ReConstructImage.objects.count(), 1)
+
+        response = self.client.get(
+            reverse("image_builder_api:generate_image-list", kwargs={"pk": self.original_image.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['results']), 1)
