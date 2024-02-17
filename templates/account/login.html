@@ -19,6 +19,7 @@
 
     <div class="card">
         <div class="card-body login-card-body">
+            {% include "dashboard/partials/alert_messages.html" %}
             <p class="login-box-msg">Sign in to start your session</p>
             {{ form.errors }}
             <form action="" method="post" action="{% url 'account_login' %}">
