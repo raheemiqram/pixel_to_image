@@ -96,6 +96,7 @@ To execute the test cases, run the following command:
 $ make test
 ```
 
+## User Guide: Image Builder System Navigation and Functionality
 
 1. **Login Screen**: This screenshot shows the login page of the system. Users can enter their credentials to access the system.
    ![Login Page](readme_data/1.png)
