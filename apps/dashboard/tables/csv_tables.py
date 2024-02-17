@@ -15,10 +15,10 @@ class ImageAjaxDatatableView(AjaxDatatableView):
         {'name': 'id', 'visible': False, },
         {'name': 'csv_file', 'visible': True, },
         {'name': 'original_image', 'visible': True, },
-        {'name': 'original_size', 'title': 'Original Size', 'placeholder': True, 'searchable': False,
+        {'name': 'original_size', 'title': 'Original Size (width x height)', 'placeholder': True, 'searchable': False,
          'orderable': False, },
-        {'name': 'resize', 'title': 'Resize', 'placeholder': True, 'searchable': False, 'orderable': False, },
-        {'name': 'resize_image', 'title': 'Resize', 'placeholder': True, 'searchable': False, 'orderable': False, },
+        {'name': 'resize_image', 'title': 'Convert Image', 'placeholder': True, 'searchable': False, 'orderable': False, },
+        {'name': 'resize', 'title': 'Convert Size (width x height)', 'placeholder': True, 'searchable': False, 'orderable': False, },
         {'name': 'created', 'visible': True, },
         {'name': 'actions', 'title': 'Actions', 'placeholder': True, 'searchable': False, 'orderable': False, },
     ]

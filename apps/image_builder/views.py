@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.urls import reverse_lazy
@@ -24,9 +25,15 @@ class UploadCSV(CreateView):
         self.object = form.save()
 
         # convert csv(pixels) to image
-        self.object.data_process(commit=True)
+        try:
+            self.object.data_process(commit=True)
+            messages.success(self.request, f"Upload successfully")
+        except Exception as e:
+            messages.error(self.request, f"Something went wrong due to {e}.")
+            return super().form_invalid(form)
 
         return super().form_valid(form)
+
 
 
 class ImageBuilder(TemplateView):

@@ -23,21 +23,27 @@
                 data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{% url 'dashboard_index' %}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Dashboard
-                            <span class="right badge badge-danger">New</span>
                         </p>
                     </a>
                 </li>
 
-                <li class="nav-header">Your Space</li>
                 <li class="nav-item">
                     <a href="{% url 'csv_list' %}" class="nav-link">
                         <i class="nav-icon fas fa-calendar-alt"></i>
                         <p>
                             Image Builder
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'swagger-ui' %}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt"></i>
+                        <p>
+                            API Documentation
                         </p>
                     </a>
                 </li>
