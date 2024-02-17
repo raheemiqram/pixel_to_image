@@ -23,11 +23,12 @@ makemigrations:
 migrate:
 	python manage.py migrate
 
-run: makemigrations migrate runserver
-
 test:
 	python manage.py test
 
 
 load_test_data:
 	 python manage.py test_data
+
+
+run: makemigrations migrate load_test_data runserver
