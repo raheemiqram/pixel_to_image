@@ -1,6 +1,7 @@
 import ast
 
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -30,6 +31,11 @@ class GenerateImage(APIView):
             depth_min = data.get("depth_min")
             depth_max = data.get("depth_max")
             original_image = get_object_or_404(OriginalImage, id=data.get("original_image_id"))
+
+            if depth_max > original_image.maximum_depth or depth_min < original_image.minimum_depth:
+                raise ValidationError(
+                    f"maximum and minimum depth should be between ({original_image.minimum_depth} - {original_image.maximum_depth})")
+
             try:
                 image = original_image.data_process(depth_min=depth_min, depth_max=depth_max, rgb_color=rgb_color,
                                                     commit=False)
