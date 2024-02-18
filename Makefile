@@ -12,23 +12,23 @@ pre-commit:
 	pre-commit run --all-files
 
 collectstatic:
-	python3 manage.py collectstatic
+	python manage.py collectstatic
 
 runserver:
-	python3 manage.py runserver
+	python manage.py runserver
 
 makemigrations:
-	python3 manage.py makemigrations
+	python manage.py makemigrations
 
 migrate:
-	python3 manage.py migrate
+	python manage.py migrate
 
 test:
-	python3 manage.py test
+	python manage.py test
 
 
 load_test_data:
-	 python3 manage.py test_data
+	 python manage.py test_data
 
 
 run: makemigrations migrate load_test_data runserver
