@@ -34,7 +34,7 @@ class GenerateImage(APIView):
 
             if depth_max > original_image.maximum_depth or depth_min < original_image.minimum_depth:
                 raise ValidationError(
-                    f"maximum and minimum depth should be between ({original_image.minimum_depth} - {original_image.maximum_depth})")
+                    f"minimum and maximum depth should be between ({original_image.minimum_depth} - {original_image.maximum_depth})")
 
             try:
                 image = original_image.data_process(depth_min=depth_min, depth_max=depth_max, rgb_color=rgb_color,
