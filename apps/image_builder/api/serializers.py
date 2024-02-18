@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from apps.image_builder.models import ReConstructImage
+from apps.image_builder.models import ReConstructImage, OriginalImage
 
 
 class GenerateImageSerializer(serializers.Serializer):
@@ -23,3 +23,9 @@ class GeneratedImageSerializer(ModelSerializer):
 
     def get_height(self, obj):
         return obj.reconstruct_image.height
+
+
+class OriginalImageSerializer(ModelSerializer):
+    class Meta:
+        model = OriginalImage
+        fields = "__all__"

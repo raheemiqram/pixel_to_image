@@ -6,7 +6,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.image_builder.api.serializers import GeneratedImageSerializer, GenerateImageSerializer
+from apps.image_builder.api.serializers import GeneratedImageSerializer, GenerateImageSerializer, \
+    OriginalImageSerializer
 from apps.image_builder.models import ReConstructImage, OriginalImage
 from drf_spectacular.utils import extend_schema
 
@@ -47,3 +48,11 @@ class GeneratedImageList(ListAPIView):
     def get_queryset(self):
         original_image = OriginalImage.objects.get(id=self.request.parser_context.get('kwargs').get('pk'))
         return ReConstructImage.objects.filter(original_image=original_image)
+
+
+class OriginalImageList(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = OriginalImageSerializer
+
+    def get_queryset(self):
+        return OriginalImage.objects.all()
