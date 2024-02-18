@@ -43,10 +43,26 @@ class OriginalImage(BaseModel):
 
         # Reshape pixel data to image dimensions (assuming it's grayscale)
         height, width = pixel_data.shape
+
+        # Convert pixel data to an image:
+        # - pixel_data: A numpy array containing the pixel values of the image.
+        # - reshape(height, width): Reshape the pixel data array to match the height and width of the image.
+        # - Image.fromarray(): Create a new image from the pixel data array.
+
         image = Image.fromarray(pixel_data.reshape(height, width))  # Assuming pixel data is in the range 0-255
 
         # Apply custom color map
         if rgb_color:
+            # Apply colorization to the image:
+            # - image.convert('L'): Convert the original image to grayscale. ('L' mode represents grayscale images)
+            # - ImageOps.colorize(): Apply colorization to the grayscale image.
+            # - black='black': Define the color for the darkest parts of the image,
+            #                  typically where the grayscale values are closest to 0.
+            #                  In this case, it's set to 'black', meaning those areas will be colored black.
+            # - white=rgb_color: Define the color for the lightest parts of the image, typically where the grayscale
+            #                    values are closest to 255 'rgb_color' holds an RGB color value,
+            #                    which means those areas will be colored with the specified RGB color.
+
             image = ImageOps.colorize(image.convert('L'), black='black', white=rgb_color)
 
         if not commit:
